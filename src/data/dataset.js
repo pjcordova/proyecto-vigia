@@ -49,44 +49,73 @@ function genActividad(base) {
   ];
 }
 
-// Dataset de 30 estudiantes
-const rawStudents = [
-  // Ciclo U21 - Veteranos en riesgo
-  { codigo: 'U21317697', nombre: 'Valentina Quispe Rojas',       carrera: 'Ingeniería de Sistemas', ciclo: '6to', PC1: 10, PC2: 9,  PC3: 7,  PC4: null, asistencia: 48, actividadDias: 25 },
-  { codigo: 'U21204831', nombre: 'Andrés Mamani Condori',        carrera: 'Administración',         ciclo: '6to', PC1: 11, PC2: 8,  PC3: 6,  PC4: null, asistencia: 52, actividadDias: 22 },
-  { codigo: 'U21389045', nombre: 'Sofía Huanca Pilco',           carrera: 'Contabilidad',           ciclo: '6to', PC1: 9,  PC2: 7,  PC3: 5,  PC4: null, asistencia: 41, actividadDias: 30 },
-  { codigo: 'U21156782', nombre: 'Diego Torres Alvarez',         carrera: 'Ingeniería de Sistemas', ciclo: '6to', PC1: 13, PC2: 14, PC3: 12, PC4: null, asistencia: 88, actividadDias: 2  },
-  { codigo: 'U21423901', nombre: 'Camila Salazar Flores',        carrera: 'Derecho',                ciclo: '6to', PC1: 15, PC2: 14, PC3: 16, PC4: null, asistencia: 95, actividadDias: 1  },
-  { codigo: 'U21078234', nombre: 'Rodrigo Vargas Medina',        carrera: 'Ingeniería Civil',       ciclo: '6to', PC1: 10, PC2: 11, PC3: 9,  PC4: null, asistencia: 70, actividadDias: 10 },
-  { codigo: 'U21340128', nombre: 'Luciana Paz Mendoza',          carrera: 'Psicología',             ciclo: '6to', PC1: 12, PC2: 11, PC3: 10, PC4: null, asistencia: 73, actividadDias: 8  },
-  { codigo: 'U21512366', nombre: 'Sebastián Chávez Ramos',       carrera: 'Administración',         ciclo: '6to', PC1: 6,  PC2: 5,  PC3: 4,  PC4: null, asistencia: 35, actividadDias: 35 },
-  { codigo: 'U21290473', nombre: 'Isabella Morales Cabrera',     carrera: 'Marketing',              ciclo: '6to', PC1: 16, PC2: 17, PC3: 15, PC4: null, asistencia: 98, actividadDias: 1  },
-  { codigo: 'U21631847', nombre: 'Emiliano Cáceres Paredes',     carrera: 'Ingeniería de Sistemas', ciclo: '6to', PC1: 11, PC2: 12, PC3: 10, PC4: null, asistencia: 75, actividadDias: 7  },
+// Generación dinámica de estudiantes para balancear datos realistas
+const firstNames = ['Valentina', 'Andrés', 'Sofía', 'Diego', 'Camila', 'Rodrigo', 'Luciana', 'Sebastián', 'Isabella', 'Emiliano', 'Daniela', 'Matías', 'Valeria', 'Nicolás', 'Natalia', 'Tomás', 'Renata', 'Felipe', 'Ariana', 'Santiago', 'Mariana', 'Alejandro', 'Gabriela', 'Joaquín', 'Catalina', 'Maximiliano', 'Fernanda', 'Ignacio', 'Bruno', 'Ximena', 'Mateo', 'Emma', 'Lucas', 'Martina', 'Leonardo', 'Mia', 'Hugo', 'Zoe', 'Martín', 'Alma'];
+const lastNames = ['Quispe', 'Rojas', 'Mamani', 'Condori', 'Huanca', 'Pilco', 'Torres', 'Alvarez', 'Salazar', 'Flores', 'Vargas', 'Medina', 'Paz', 'Mendoza', 'Chávez', 'Ramos', 'Morales', 'Cabrera', 'Cáceres', 'Paredes', 'Romero', 'Sánchez', 'Herrera', 'Gutiérrez', 'Reyes', 'Castillo', 'Peña', 'Villanueva', 'Cruz', 'López', 'Vega', 'Espinoza', 'Acosta', 'Mendívil', 'Aguilar', 'Toro', 'Delgado', 'Montoya', 'Fuentes', 'Ríos'];
+const careers = ['Ingeniería de Sistemas', 'Administración', 'Contabilidad', 'Derecho', 'Ingeniería Civil', 'Psicología', 'Marketing'];
 
-  // Ciclo U22 - Intermedios
-  { codigo: 'U22113456', nombre: 'Daniela Romero Sánchez',       carrera: 'Contabilidad',           ciclo: '4to', PC1: 13, PC2: 12, PC3: 11, PC4: null, asistencia: 80, actividadDias: 4  },
-  { codigo: 'U22285901', nombre: 'Matías Herrera Gutiérrez',     carrera: 'Derecho',                ciclo: '4to', PC1: 9,  PC2: 10, PC3: 8,  PC4: null, asistencia: 65, actividadDias: 12 },
-  { codigo: 'U22374120', nombre: 'Valeria Reyes Castillo',       carrera: 'Administración',         ciclo: '4to', PC1: 14, PC2: 13, PC3: 15, PC4: null, asistencia: 91, actividadDias: 2  },
-  { codigo: 'U22049237', nombre: 'Nicolás Peña Villanueva',      carrera: 'Ingeniería Civil',       ciclo: '4to', PC1: 7,  PC2: 6,  PC3: 8,  PC4: null, asistencia: 55, actividadDias: 20 },
-  { codigo: 'U22567083', nombre: 'Natalia Cruz López',           carrera: 'Psicología',             ciclo: '4to', PC1: 12, PC2: 13, PC3: 12, PC4: null, asistencia: 83, actividadDias: 3  },
-  { codigo: 'U22198345', nombre: 'Tomás Vega Espinoza',          carrera: 'Marketing',              ciclo: '4to', PC1: 10, PC2: 9,  PC3: 7,  PC4: null, asistencia: 68, actividadDias: 13 },
-  { codigo: 'U22411672', nombre: 'Renata Acosta Mendívil',       carrera: 'Ingeniería de Sistemas', ciclo: '4to', PC1: 16, PC2: 18, PC3: 17, PC4: null, asistencia: 97, actividadDias: 1  },
-  { codigo: 'U22073891', nombre: 'Felipe Aguilar Toro',          carrera: 'Contabilidad',           ciclo: '4to', PC1: 8,  PC2: 7,  PC3: 5,  PC4: null, asistencia: 45, actividadDias: 28 },
-  { codigo: 'U22336524', nombre: 'Ariana Delgado Quispe',        carrera: 'Derecho',                ciclo: '4to', PC1: 11, PC2: 10, PC3: 12, PC4: null, asistencia: 77, actividadDias: 6  },
-  { codigo: 'U22490156', nombre: 'Santiago Montoya Fuentes',     carrera: 'Ingeniería Civil',       ciclo: '4to', PC1: 5,  PC2: 4,  PC3: 6,  PC4: null, asistencia: 30, actividadDias: 40 },
+function generateStudent(courseId, profile) {
+  const code = 'U' + (20 + Math.floor(Math.random() * 4)) + Math.floor(100000 + Math.random() * 900000);
+  const nombre = `${firstNames[Math.floor(Math.random() * firstNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`;
+  const carrera = careers[Math.floor(Math.random() * careers.length)];
+  const ciclo = ['2do', '4to', '6to', '8vo'][Math.floor(Math.random() * 4)];
+  
+  let PC1, PC2, PC3, asistencia, actividadDias;
+  if (profile === 'good') {
+    PC1 = 14 + Math.floor(Math.random() * 7);
+    PC2 = 14 + Math.floor(Math.random() * 7);
+    PC3 = 14 + Math.floor(Math.random() * 7);
+    asistencia = 85 + Math.floor(Math.random() * 16);
+    actividadDias = 1 + Math.floor(Math.random() * 4);
+  } else if (profile === 'average') {
+    PC1 = 11 + Math.floor(Math.random() * 4);
+    PC2 = 11 + Math.floor(Math.random() * 4);
+    PC3 = 11 + Math.floor(Math.random() * 4);
+    asistencia = 75 + Math.floor(Math.random() * 11);
+    actividadDias = 3 + Math.floor(Math.random() * 5);
+  } else if (profile === 'risk_attendance') {
+    PC1 = 12 + Math.floor(Math.random() * 6);
+    PC2 = 12 + Math.floor(Math.random() * 6);
+    PC3 = 12 + Math.floor(Math.random() * 6);
+    asistencia = 50 + Math.floor(Math.random() * 15);
+    actividadDias = 5 + Math.floor(Math.random() * 8);
+  } else if (profile === 'risk_grades') {
+    PC1 = 5 + Math.floor(Math.random() * 5);
+    PC2 = 5 + Math.floor(Math.random() * 5);
+    PC3 = 5 + Math.floor(Math.random() * 5);
+    asistencia = 70 + Math.floor(Math.random() * 20);
+    actividadDias = 5 + Math.floor(Math.random() * 10);
+  } else { // critical_abandonment
+    PC1 = 0 + Math.floor(Math.random() * 6);
+    PC2 = 0 + Math.floor(Math.random() * 6);
+    PC3 = 0 + Math.floor(Math.random() * 6);
+    asistencia = 20 + Math.floor(Math.random() * 30);
+    actividadDias = 15 + Math.floor(Math.random() * 20);
+  }
 
-  // Ciclo U23 - Nuevos ingresos
-  { codigo: 'U23101234', nombre: 'Mariana Ríos Fernández',       carrera: 'Administración',         ciclo: '2do', PC1: 13, PC2: 14, PC3: 13, PC4: null, asistencia: 86, actividadDias: 3  },
-  { codigo: 'U23245678', nombre: 'Alejandro Fuentes Vera',       carrera: 'Psicología',             ciclo: '2do', PC1: 10, PC2: 9,  PC3: 8,  PC4: null, asistencia: 62, actividadDias: 15 },
-  { codigo: 'U23389012', nombre: 'Gabriela Ochoa Tapia',         carrera: 'Marketing',              ciclo: '2do', PC1: 15, PC2: 16, PC3: 14, PC4: null, asistencia: 93, actividadDias: 2  },
-  { codigo: 'U23423456', nombre: 'Joaquín Silva Bravo',          carrera: 'Ingeniería de Sistemas', ciclo: '2do', PC1: 7,  PC2: 6,  PC3: 5,  PC4: null, asistencia: 50, actividadDias: 25 },
-  { codigo: 'U23567890', nombre: 'Catalina Torres Noriega',      carrera: 'Contabilidad',           ciclo: '2do', PC1: 12, PC2: 11, PC3: 13, PC4: null, asistencia: 79, actividadDias: 5  },
-  { codigo: 'U23612345', nombre: 'Maximiliano Lagos Porras',     carrera: 'Ingeniería Civil',       ciclo: '2do', PC1: 9,  PC2: 8,  PC3: 7,  PC4: null, asistencia: 58, actividadDias: 18 },
-  { codigo: 'U23756789', nombre: 'Fernanda Castillo Rueda',      carrera: 'Derecho',                ciclo: '2do', PC1: 14, PC2: 15, PC3: 13, PC4: null, asistencia: 90, actividadDias: 2  },
-  { codigo: 'U23801234', nombre: 'Ignacio Paredes Salas',        carrera: 'Administración',         ciclo: '2do', PC1: 6,  PC2: 5,  PC3: 4,  PC4: null, asistencia: 38, actividadDias: 33 },
-  { codigo: 'U23945678', nombre: 'Valentina Guzmán Prada',       carrera: 'Psicología',             ciclo: '2do', PC1: 11, PC2: 12, PC3: 10, PC4: null, asistencia: 74, actividadDias: 7  },
-  { codigo: 'U23090123', nombre: 'Bruno Espinoza Quiroga',       carrera: 'Marketing',              ciclo: '2do', PC1: 17, PC2: 18, PC3: 16, PC4: null, asistencia: 99, actividadDias: 1  },
+  return { codigo: code, nombre, carrera, ciclo, PC1, PC2, PC3, PC4: null, asistencia, actividadDias, cursoId: courseId };
+}
+
+const courseProfiles = [
+  { id: 'SIST101', counts: { good: 10, average: 15, risk_attendance: 2, risk_grades: 4, critical_abandonment: 1 } },
+  { id: 'SIST102', counts: { good: 5, average: 10, risk_attendance: 1, risk_grades: 12, critical_abandonment: 2 } },
+  { id: 'SIST103', counts: { good: 15, average: 8, risk_attendance: 0, risk_grades: 2, critical_abandonment: 0 } },
+  { id: 'SIST104', counts: { good: 8, average: 12, risk_attendance: 5, risk_grades: 8, critical_abandonment: 3 } },
+  { id: 'SIST105', counts: { good: 12, average: 10, risk_attendance: 3, risk_grades: 3, critical_abandonment: 1 } },
+  { id: 'SIST106', counts: { good: 9, average: 11, risk_attendance: 2, risk_grades: 5, critical_abandonment: 2 } },
+  { id: 'SIST107', counts: { good: 14, average: 7, risk_attendance: 4, risk_grades: 1, critical_abandonment: 0 } },
+  { id: 'SIST108', counts: { good: 6, average: 8, risk_attendance: 5, risk_grades: 6, critical_abandonment: 5 } },
+  { id: 'SIST109', counts: { good: 11, average: 14, risk_attendance: 1, risk_grades: 3, critical_abandonment: 1 } },
 ];
+
+const rawStudents = [];
+courseProfiles.forEach(cp => {
+  Object.keys(cp.counts).forEach(profile => {
+    for (let i = 0; i < cp.counts[profile]; i++) {
+      rawStudents.push(generateStudent(cp.id, profile));
+    }
+  });
+});
 
 // Procesa y enriquece los datos
 export const STUDENTS_INITIAL = rawStudents.map(s => {
@@ -103,46 +132,21 @@ export const STUDENTS_INITIAL = rawStudents.map(s => {
     actividadMensual: genActividad(Math.floor(30 - s.actividadDias * 0.8)),
     email: `${s.codigo.toLowerCase()}@utp.edu.pe`,
     foto: null,
-    cursoId: ['SIST101', 'SIST102', 'SIST103'][Math.floor(Math.random() * 3)],
     intervenido: false,
   };
 });
 
 // Cursos del docente
 export const COURSES_INITIAL = [
-  {
-    id: 'SIST101',
-    nombre: 'Algoritmos y Estructuras de Datos',
-    codigo: 'SIST101',
-    seccion: 'G01',
-    ciclo: '2026-I',
-    horario: 'Lun/Mié 08:00-10:00',
-    aula: 'H-201',
-    alumnos: 30,
-    creditos: 4,
-  },
-  {
-    id: 'SIST102',
-    nombre: 'Ingeniería de Software I',
-    codigo: 'SIST102',
-    seccion: 'G02',
-    ciclo: '2026-I',
-    horario: 'Mar/Jue 10:00-12:00',
-    aula: 'H-305',
-    alumnos: 28,
-    creditos: 3,
-  },
-  {
-    id: 'SIST103',
-    nombre: 'Base de Datos Avanzado',
-    codigo: 'SIST103',
-    seccion: 'G01',
-    ciclo: '2026-I',
-    horario: 'Vie 14:00-18:00',
-    aula: 'Lab-102',
-    alumnos: 25,
-    creditos: 4,
-  },
+  { id: 'SIST101', nombre: 'Algoritmos y Estructuras de Datos', codigo: 'SIST101', seccion: 'G01', ciclo: '2026-I', horario: 'Lun/Mié 08:00-10:00', aula: 'H-201', alumnos: 32, creditos: 4 },
+  { id: 'SIST102', nombre: 'Ingeniería de Software I', codigo: 'SIST102', seccion: 'G02', ciclo: '2026-I', horario: 'Mar/Jue 10:00-12:00', aula: 'H-305', alumnos: 30, creditos: 3 },
+  { id: 'SIST103', nombre: 'Base de Datos Avanzado', codigo: 'SIST103', seccion: 'G01', ciclo: '2026-I', horario: 'Vie 14:00-18:00', aula: 'Lab-102', alumnos: 25, creditos: 4 },
+  { id: 'SIST104', nombre: 'Curso Integrador II: Sistemas', codigo: 'SIST104', seccion: 'G03', ciclo: '2026-I', horario: 'Lun 18:00-22:00', aula: 'Lab-205', alumnos: 36, creditos: 4 },
+  { id: 'SIST105', nombre: 'Interacción Hombre-Máquina', codigo: 'SIST105', seccion: 'G01', ciclo: '2026-I', horario: 'Mié/Vie 10:00-12:00', aula: 'H-402', alumnos: 29, creditos: 3 },
+  { id: 'SIST106', nombre: 'Herramientas del Prototipo', codigo: 'SIST106', seccion: 'G02', ciclo: '2026-I', horario: 'Mar 14:00-17:00', aula: 'Lab-301', alumnos: 29, creditos: 3 },
+  { id: 'SIST107', nombre: 'Innovación y Transformación Digital', codigo: 'SIST107', seccion: 'G01', ciclo: '2026-I', horario: 'Jue 18:00-21:00', aula: 'H-501', alumnos: 26, creditos: 3 },
+  { id: 'SIST108', nombre: 'Gestión del Servicio TI', codigo: 'SIST108', seccion: 'G01', ciclo: '2026-I', horario: 'Sab 08:00-11:00', aula: 'H-203', alumnos: 30, creditos: 3 },
+  { id: 'SIST109', nombre: 'Hojas de Estilo en Cascada Avanzada', codigo: 'SIST109', seccion: 'G04', ciclo: '2026-I', horario: 'Lun/Mié 14:00-16:00', aula: 'Lab-105', alumnos: 30, creditos: 3 },
 ];
 
 // Docente

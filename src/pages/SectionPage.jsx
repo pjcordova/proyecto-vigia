@@ -286,7 +286,10 @@ export default function SectionPage() {
   const [sortField, setSortField] = useState('riesgo');
   const [sortAsc, setSortAsc] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [isLoading] = useState(false); // skeleton demo
+  
+  // Lazy loading states
+  const [showList, setShowList] = useState(false);
+  const [isListLoading, setIsListLoading] = useState(false);
 
   const courseStudents = useMemo(
     () => students.filter(s => s.cursoId === selectedCourse?.id),
@@ -342,6 +345,16 @@ export default function SectionPage() {
     ? (sortAsc ? <ChevronUp size={12} /> : <ChevronDown size={12} />)
     : <SortAsc size={12} className="opacity-30" />;
 
+  const handleToggleList = () => {
+    if (!showList) {
+      setShowList(true);
+      setIsListLoading(true);
+      setTimeout(() => setIsListLoading(false), 800); // Simulate network load
+    } else {
+      setShowList(false);
+    }
+  };
+
   if (!selectedCourse) return null;
 
   return (
@@ -368,18 +381,12 @@ export default function SectionPage() {
 
       {/* KPI row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
-        {isLoading ? (
-          [...Array(6)].map((_, i) => <SkeletonKPI key={i} />)
-        ) : (
-          <>
-            <KPICard label="Alumnos" value={kpis.total} icon={Users} color="text-blue-400" sub="matriculados" />
-            <KPICard label="Críticos" value={kpis.criticos} icon={AlertTriangle} color="text-red-400" sub="intervención urgente" />
-            <KPICard label="Riesgo Alto" value={kpis.altos} icon={TrendingUp} color="text-amber-400" sub="seguimiento activo" />
-            <KPICard label="Abandono" value={kpis.abandono} icon={Clock} color="text-violet-400" sub="+14 días inactivos" />
-            <KPICard label="Aprobados" value={kpis.aprobados} icon={Award} color="text-emerald-400" sub="nota ≥ 12" />
-            <KPICard label="Promedio" value={kpis.promedio} icon={BarChart2} color="text-blue-300" sub="grupo" />
-          </>
-        )}
+        <KPICard label="Alumnos" value={kpis.total} icon={Users} color="text-blue-400" sub="matriculados" />
+        <KPICard label="Críticos" value={kpis.criticos} icon={AlertTriangle} color="text-red-400" sub="intervención urgente" />
+        <KPICard label="Riesgo Alto" value={kpis.altos} icon={TrendingUp} color="text-amber-400" sub="seguimiento activo" />
+        <KPICard label="Abandono" value={kpis.abandono} icon={Clock} color="text-violet-400" sub="+14 días inactivos" />
+        <KPICard label="Aprobados" value={kpis.aprobados} icon={Award} color="text-emerald-400" sub="nota ≥ 12" />
+        <KPICard label="Promedio" value={kpis.promedio} icon={BarChart2} color="text-blue-300" sub="grupo" />
       </div>
 
       {/* Charts */}
@@ -421,43 +428,63 @@ export default function SectionPage() {
           </div>
 
           {/* Search */}
-          <div className="relative mt-3">
-            <Search size={16} className="absolute left-3 top-3 text-slate-500" />
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Buscar por nombre o código U (ej. U21317697)..."
-              className="input-glow w-full bg-slate-800/60 border border-slate-600/40 focus:border-blue-500/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition-all"
-            />
-            {search && (
-              <button onClick={() => setSearch('')} className="absolute right-3 top-3 text-slate-500 hover:text-slate-300">
-                ✕
-              </button>
-            )}
-          </div>
+          {showList && (
+            <div className="relative mt-3 animate-fade-in">
+              <Search size={16} className="absolute left-3 top-3 text-slate-500" />
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Buscar por nombre o código U (ej. U21317697)..."
+                className="input-glow w-full bg-slate-800/60 border border-slate-600/40 focus:border-blue-500/60 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-slate-500 outline-none transition-all"
+              />
+              {search && (
+                <button onClick={() => setSearch('')} className="absolute right-3 top-3 text-slate-500 hover:text-slate-300">
+                  ✕
+                </button>
+              )}
+            </div>
+          )}
 
           {/* Sort buttons */}
-          <div className="flex items-center gap-2 mt-3">
-            <span className="text-xs text-slate-600">Ordenar:</span>
-            {[['riesgo', 'Riesgo'], ['promedio', 'Promedio'], ['asistencia', 'Asistencia'], ['nombre', 'Nombre']].map(([field, label]) => (
-              <button
-                key={field}
-                onClick={() => toggleSort(field)}
-                className={`flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-all ${
-                  sortField === field ? 'text-blue-400 bg-blue-500/10' : 'text-slate-500 hover:text-slate-400'
-                }`}
-              >
-                {label} <SortIcon field={field} />
-              </button>
-            ))}
-          </div>
+          {showList && (
+            <div className="flex items-center gap-2 mt-3 animate-fade-in">
+              <span className="text-xs text-slate-600">Ordenar:</span>
+              {[['riesgo', 'Riesgo'], ['promedio', 'Promedio'], ['asistencia', 'Asistencia'], ['nombre', 'Nombre']].map(([field, label]) => (
+                <button
+                  key={field}
+                  onClick={() => toggleSort(field)}
+                  className={`flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-all ${
+                    sortField === field ? 'text-blue-400 bg-blue-500/10' : 'text-slate-500 hover:text-slate-400'
+                  }`}
+                >
+                  {label} <SortIcon field={field} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* List body */}
         <div className="p-4 space-y-2 max-h-[600px] overflow-y-auto">
-          {isLoading ? (
-            [...Array(8)].map((_, i) => <SkeletonStudentRow key={i} />)
+          {!showList ? (
+            <div className="text-center py-10">
+              <div className="h-16 w-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/20">
+                <Users size={24} className="text-blue-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Lista de Alumnos Oculta</h3>
+              <p className="text-sm text-slate-400 mb-6 max-w-sm mx-auto">
+                Para optimizar el rendimiento, la lista completa de {courseStudents.length} alumnos se carga bajo demanda.
+              </p>
+              <button 
+                onClick={handleToggleList}
+                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]"
+              >
+                Cargar lista completa
+              </button>
+            </div>
+          ) : isListLoading ? (
+            [...Array(6)].map((_, i) => <SkeletonStudentRow key={i} />)
           ) : filtered.length === 0 ? (
             <div className="text-center py-12 text-slate-500">
               <Search size={32} className="mx-auto mb-3 opacity-30" />
@@ -465,9 +492,19 @@ export default function SectionPage() {
               <p className="text-xs mt-1">Intente con otro término de búsqueda</p>
             </div>
           ) : (
-            filtered.map((s, i) => (
-              <StudentRow key={s.codigo} student={s} onSelect={setSelectedStudent} index={i} />
-            ))
+            <>
+              <div className="flex justify-end mb-2">
+                <button 
+                  onClick={handleToggleList}
+                  className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                >
+                  Ocultar lista
+                </button>
+              </div>
+              {filtered.map((s, i) => (
+                <StudentRow key={s.codigo} student={s} onSelect={setSelectedStudent} index={i} />
+              ))}
+            </>
           )}
         </div>
       </div>

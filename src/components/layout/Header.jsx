@@ -114,7 +114,10 @@ export default function Header() {
           {currentUser && (
             <div className="flex items-center gap-2">
               {/* Alert bell */}
-              <button className="relative p-2 rounded-lg hover:bg-slate-700/60 transition-colors text-slate-400 hover:text-slate-200">
+              <button 
+                onClick={actions.toggleNotifications}
+                className="relative p-2 rounded-lg hover:bg-slate-700/60 transition-colors text-slate-400 hover:text-slate-200"
+              >
                 <Bell size={18} />
                 {criticalCount > 0 && (
                   <span className="absolute top-1 right-1 h-4 w-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold leading-none">

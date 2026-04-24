@@ -1,12 +1,14 @@
 import React, { Suspense, lazy } from 'react';
 import { AppProvider, useApp } from './context/AppContext.jsx';
 import Header from './components/layout/Header.jsx';
+import NotificationsDrawer from './components/layout/NotificationsDrawer.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 
 // Lazy load pages for optimized loading
 const DashboardPage = lazy(() => import('./pages/DashboardPage.jsx'));
 const SectionPage   = lazy(() => import('./pages/SectionPage.jsx'));
 const AdminPage     = lazy(() => import('./pages/AdminPage.jsx'));
+const KPIStudentsPage = lazy(() => import('./pages/KPIStudentsPage.jsx'));
 
 function PageLoader() {
   return (
@@ -39,6 +41,7 @@ function AppRouter() {
           {currentView === 'dashboard' && <DashboardPage />}
           {currentView === 'section'   && <SectionPage />}
           {currentView === 'admin'     && <AdminPage />}
+          {currentView === 'kpi_students' && <KPIStudentsPage />}
         </Suspense>
       </main>
 
@@ -61,6 +64,9 @@ function AppRouter() {
           </div>
         </div>
       </footer>
+      
+      {/* Drawer */}
+      <NotificationsDrawer />
     </div>
   );
 }

@@ -121,7 +121,7 @@ function CourseCard({ course, onClick }) {
 
 // Global stats banner
 function GlobalKPIs() {
-  const { state } = useApp();
+  const { state, actions } = useApp();
 
   const stats = useMemo(() => {
     const total = state.students.length;
@@ -133,20 +133,25 @@ function GlobalKPIs() {
   }, [state.students]);
 
   const kpis = [
-    { label: 'Total Estudiantes', value: stats.total, icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
-    { label: 'Riesgo Crítico', value: stats.criticos, icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20' },
-    { label: 'Riesgo Alto', value: stats.altos, icon: TrendingUp, color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
-    { label: 'Posible Abandono', value: stats.abandono, icon: Clock, color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
-    { label: 'Aprobados', value: stats.aprobados, icon: Star, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+    { label: 'Total Estudiantes', value: stats.total, icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20', filterId: 'ALL' },
+    { label: 'Riesgo Crítico', value: stats.criticos, icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/20', filterId: 'CRITICO' },
+    { label: 'Riesgo Alto', value: stats.altos, icon: TrendingUp, color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20', filterId: 'ALTO' },
+    { label: 'Posible Abandono', value: stats.abandono, icon: Clock, color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/20', filterId: 'ABANDONO' },
+    { label: 'Aprobados', value: stats.aprobados, icon: Star, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', filterId: 'APROBADOS' },
   ];
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-8">
-      {kpis.map(kpi => (
-        <div key={kpi.label} className={`glass-card rounded-xl p-4 border ${kpi.border} ${kpi.bg} animate-fade-in`}>
+      {kpis.map((kpi, i) => (
+        <div 
+          key={kpi.label} 
+          onClick={() => actions.setKPIFilter(kpi.filterId)}
+          className={`glass-card rounded-xl p-4 border ${kpi.border} ${kpi.bg} animate-fade-in cursor-pointer group hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
+          style={{ animationDelay: `${i * 50}ms` }}
+        >
           <div className="flex items-center justify-between mb-2">
-            <p className="text-xs text-slate-400 font-medium leading-tight">{kpi.label}</p>
-            <kpi.icon size={16} className={kpi.color} />
+            <p className={`text-xs text-slate-400 font-medium leading-tight group-hover:${kpi.color} transition-colors`}>{kpi.label}</p>
+            <kpi.icon size={16} className={`${kpi.color} group-hover:scale-110 transition-transform`} />
           </div>
           <p className={`text-3xl font-black ${kpi.color}`}>{kpi.value}</p>
         </div>

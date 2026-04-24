@@ -27,6 +27,8 @@ const initialState = {
 
   // UI
   adminTab: 'students', // 'students' | 'courses' | 'grades'
+  isNotificationsOpen: false,
+  kpiFilter: null, // 'CRITICO' | 'ALTO' | 'ABANDONO' | 'APROBADOS' | 'ALL'
 };
 
 function reducer(state, action) {
@@ -98,13 +100,19 @@ function reducer(state, action) {
       return { ...state, selectedCourse: action.payload, currentView: 'section' };
 
     case 'GO_DASHBOARD':
-      return { ...state, currentView: 'dashboard', selectedCourse: null };
+      return { ...state, currentView: 'dashboard', selectedCourse: null, kpiFilter: null };
 
     case 'GO_ADMIN':
-      return { ...state, currentView: 'admin' };
+      return { ...state, currentView: 'admin', kpiFilter: null };
 
     case 'SET_ADMIN_TAB':
       return { ...state, adminTab: action.payload };
+
+    case 'TOGGLE_NOTIFICATIONS':
+      return { ...state, isNotificationsOpen: !state.isNotificationsOpen };
+
+    case 'SET_KPI_FILTER':
+      return { ...state, kpiFilter: action.payload, currentView: 'kpi_students', selectedCourse: null };
 
     // STUDENT CRUD
     case 'ADD_STUDENT': {
@@ -192,6 +200,8 @@ export function AppProvider({ children }) {
     goDashboard: () => dispatch({ type: 'GO_DASHBOARD' }),
     goAdmin: () => dispatch({ type: 'GO_ADMIN' }),
     setAdminTab: (tab) => dispatch({ type: 'SET_ADMIN_TAB', payload: tab }),
+    toggleNotifications: () => dispatch({ type: 'TOGGLE_NOTIFICATIONS' }),
+    setKPIFilter: (filter) => dispatch({ type: 'SET_KPI_FILTER', payload: filter }),
     addStudent: (student) => dispatch({ type: 'ADD_STUDENT', payload: student }),
     updateStudent: (codigo, changes) => dispatch({ type: 'UPDATE_STUDENT', payload: { codigo, changes } }),
     deleteStudent: (codigo) => dispatch({ type: 'DELETE_STUDENT', payload: codigo }),
